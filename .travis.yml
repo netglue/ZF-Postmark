@@ -10,7 +10,7 @@ php:
 - 7.1
 - 7.2
 
-install:
+before_script:
 - composer install
 - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
 - chmod +x ./cc-test-reporter
@@ -24,4 +24,5 @@ after_success:
 - travis_retry composer upload-coverage
 
 after_script:
-- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+- mv build/clover.xml clover.xml
+- ./cc-test-reporter after-build --coverage-input-type clover --exit-code $TRAVIS_TEST_RESULT

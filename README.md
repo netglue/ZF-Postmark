@@ -3,6 +3,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/netglue/ZF-Postmark/badge.svg)](https://coveralls.io/github/netglue/ZF-Postmark)
 [![Build Status](https://travis-ci.org/netglue/ZF-Postmark.svg?branch=master)](https://travis-ci.org/netglue/ZF-Postmark)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9a92cc83946c205396e8/maintainability)](https://codeclimate.com/github/netglue/ZF-Postmark/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9a92cc83946c205396e8/test_coverage)](https://codeclimate.com/github/netglue/ZF-Postmark/test_coverage)
 
 ## Purpose
 

@@ -14,7 +14,7 @@ use NetgluePostmark\EventManager\OpenEvent;
 use NetgluePostmark\Listener\LoggingListener;
 use NetgluePostmark\Service\EventEmitter;
 use NetgluePostmarkTest\TestCase;
-use Psr\Container\ContainerInterface;
+use Interop\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class LoggingListenerTest extends TestCase

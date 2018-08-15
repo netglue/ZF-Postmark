@@ -1,0 +1,17 @@
+sudo: false
+
+language: php
+
+php:
+- 7.1
+- 7.2
+
+install:
+- composer install
+
+script:
+- composer test-coverage
+- composer cs-check
+
+after_success:
+- travis_retry composer upload-coverage

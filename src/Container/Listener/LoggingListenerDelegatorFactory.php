@@ -6,13 +6,18 @@ namespace NetgluePostmark\Container\Listener;
 use NetgluePostmark\Exception;
 use NetgluePostmark\Listener\LoggingListener;
 use NetgluePostmark\Service\EventEmitter;
-use Psr\Container\ContainerInterface;
+use Interop\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Zend\ServiceManager\Factory\DelegatorFactoryInterface;
 
-class LoggingListenerDelegatorFactory
+class LoggingListenerDelegatorFactory implements DelegatorFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, string $name, callable $callback) : EventEmitter
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        $name,
+        callable $callback,
+        ?array $options = null
+    ) : EventEmitter {
         if (! $container->has(LoggerInterface::class)) {
             throw new Exception\ConfigException('A Psr logger cannot be found in the container');
         }

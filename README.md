@@ -1,6 +1,7 @@
 # Zend Framework Module: Postmark Inbound & Events Webhook
 
 
+[![Latest Stable Version](https://poser.pugx.org/netglue/zf-postmark/version)](https://packagist.org/packages/netglue/zf-postmark)
 [![Coverage Status](https://coveralls.io/repos/github/netglue/ZF-Postmark/badge.svg)](https://coveralls.io/github/netglue/ZF-Postmark)
 [![Build Status](https://travis-ci.org/netglue/ZF-Postmark.svg?branch=master)](https://travis-ci.org/netglue/ZF-Postmark)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9a92cc83946c205396e8/maintainability)](https://codeclimate.com/github/netglue/ZF-Postmark/maintainability)

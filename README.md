@@ -1,5 +1,9 @@
 # Zend Framework Module: Postmark Inbound & Events Webhook
 
+
+[![Coverage Status](https://coveralls.io/repos/github/netglue/ZF-Postmark/badge.svg)](https://coveralls.io/github/netglue/ZF-Postmark)
+[![Build Status](https://travis-ci.org/netglue/ZF-Postmark.svg?branch=master)](https://travis-ci.org/netglue/ZF-Postmark)
+
 ## Purpose
 
 This module/package can be added to a ZF3 application in order to easily process webhooks sent by

@@ -34,6 +34,7 @@ class LoggingListenerTest extends TestCase
 
         $this->logger = new Logger('Test');
         $this->testHandler = new TestHandler();
+        $this->testHandler->clear();
         $this->logger->pushHandler($this->testHandler);
         $this->listener = new LoggingListener($this->logger);
     }

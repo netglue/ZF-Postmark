@@ -5,13 +5,25 @@ namespace NetgluePostmark\Service;
 
 use NetgluePostmark\EventManager\InboundMessageEvent;
 use NetgluePostmark\EventManager\OutboundEvent;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerAwareTrait;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventsCapableInterface;
 
-class EventEmitter implements EventManagerAwareInterface
+class EventEmitter implements EventsCapableInterface
 {
 
-    use EventManagerAwareTrait;
+    /** @var EventManager */
+    private $eventManager;
+
+    public function __construct()
+    {
+        $this->eventManager = new EventManager();
+        $this->eventManager->setIdentifiers([__CLASS__]);
+    }
+
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
 
     public function process(string $jsonPayload) : void
     {

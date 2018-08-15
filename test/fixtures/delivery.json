@@ -1,7 +1,7 @@
 {
     "RecordType": "Delivery",
     "ServerId": 23,
-    "MessageID": "883953f4-6105-42a2-a16a-77a8eac79483",
+    "MessageID": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
     "Recipient": "john@example.com",
     "Tag": "welcome-email",
     "Metadata" : {

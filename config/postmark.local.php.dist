@@ -1,32 +1,23 @@
 <?php
-
 declare(strict_types=1);
 
 return [
 
     /**
-     * For Zend\Mvc apps, change the configuration of these routes if you want to modify the url
+     * You can override the endpoint URLs by changing the 'route' parameter for each below.
+     * Only postmark will be sending data here, so the url can be as obscure as you like.
+     * The defaults are provided below:
      */
     'router' => [
         'routes' => [
             'postmark-outbound-webhook' => [
-                'type' => 'Literal',
                 'options' => [
                     'route' => '/postmark-outbound-webhook',
-                    'defaults' => [
-                        'controller' => NetgluePostmark\Controller\WebhookController::class,
-                        'action' => 'webhook',
-                    ],
                 ],
             ],
             'postmark-inbound-webhook' => [
-                'type' => 'Literal',
                 'options' => [
                     'route' => '/postmark-inbound-webhook',
-                    'defaults' => [
-                        'controller' => NetgluePostmark\Controller\WebhookController::class,
-                        'action' => 'inbound',
-                    ],
                 ],
             ],
         ],
@@ -39,13 +30,10 @@ return [
              * If basic auth is enabled, you must provide a string username and password, in the clear.
              * You'd then setup your Postmark webhook like: https://postmarkUser:Password@mydomain.com/webhookUrl
              * The Realm is usually presented in a login dialog
-             *
-             * Basic auth is disabled by default here, but it is trivial to setup and will help prevent bad actors from
-             * posting junk to your webhook endpoint, therefore, it's a good idea to set it up…
              */
-            'basicAuth' => false,
-            'username' => null,
-            'password' => null,
+            'basicAuth' => true,
+            'username' => 'someSuperRandomUsername',
+            'password' => 'andAPasswordThatNoOneIsGonnaGuess',
             'realm'    => 'Postmark',
             /**
              * Exception handling for the endpoint
@@ -59,10 +47,15 @@ return [
         ],
     ],
 
-    'view_manager' => [
-        'strategies' => [
-            'ViewJsonStrategy',
+    /**
+     * The following delegator factory automatically attaches the example logging listener to the EventEmitter's
+     * EventManager instance, therefore, all events will be logged. To disable it, just comment it out or delete it.
+     */
+    'service_manager' => [
+        'delegators' => [
+            NetgluePostmark\Service\EventEmitter::class => [
+                NetgluePostmark\Container\Listener\LoggingListenerDelegatorFactory::class,
+            ],
         ],
     ],
-
 ];

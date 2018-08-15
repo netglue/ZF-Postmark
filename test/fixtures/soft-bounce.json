@@ -1,9 +1,9 @@
 {
     "RecordType": "Bounce",
     "ID": 42,
-    "Type": "HardBounce",
-    "TypeCode": 1,
-    "Name": "Hard bounce",
+    "Type": "SoftBounce",
+    "TypeCode": 4096,
+    "Name": "Soft bounce",
     "Tag": "Test",
     "MessageID": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
     "Metadata" : {
@@ -11,7 +11,7 @@
         "b_key": "b_value"
     },
     "ServerID": 23,
-    "Description": "The server was unable to deliver your message (ex: unknown user, mailbox not found).",
+    "Description": "Unable to temporarily deliver message (i.e. mailbox full, account disabled, exceeds quota, out of disk space).",
     "Details": "Test bounce details",
     "Email": "john@example.com",
     "From": "sender@example.com",

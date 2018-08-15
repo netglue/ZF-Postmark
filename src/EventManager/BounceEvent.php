@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace NetgluePostmark\EventManager;
 
 use NetgluePostmark\Exception;
+use function array_key_exists;
 use function in_array;
 
 class BounceEvent extends OutboundEvent
@@ -62,12 +63,11 @@ class BounceEvent extends OutboundEvent
         100001,
     ];
 
-    public static function factory(string $jsonPayload) : OutboundEvent
+    public static function withPayload(array $payload) : OutboundEvent
     {
         /** @var self $event */
-        $event = parent::factory($jsonPayload);
-        $payload = $event->payload();
-        if (! isset($payload['TypeCode']) || ! in_array($payload['TypeCode'], self::$postmarkBounceCodes, true)) {
+        $event = parent::withPayload($payload);
+        if (! isset($payload['TypeCode']) || ! array_key_exists($payload['TypeCode'], self::$postmarkBounceCodes)) {
             throw new Exception\InvalidArgumentException('No Bounce "TypeCode" can be detected in the payload');
         }
         if (! $event->isSpamComplaint() && $event->isHardBounce()) {

@@ -5,7 +5,7 @@
     "TypeCode": 512,
     "Name": "Spam complaint",
     "Tag": "Test",
-    "MessageID": "00000000-0000-0000-0000-000000000000",
+    "MessageID": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
     "Metadata" : {
         "a_key" : "a_value",
         "b_key": "b_value"

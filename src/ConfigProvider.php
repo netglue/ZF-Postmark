@@ -29,6 +29,12 @@ class ConfigProvider
                 Controller\WebhookController::class => Container\Controller\WebhookControllerFactory::class,
                 Service\EventEmitter::class => InvokableFactory::class,
             ],
+            'delegators' => [
+                Service\EventEmitter::class => [
+                    // To enable the example logging listener by default, you'd uncomment this
+                    //Container\Listener\LoggingListenerDelegatorFactory::class,
+                ],
+            ],
         ];
     }
 

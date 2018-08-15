@@ -52,5 +52,11 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-html build/report",
         "analyse": "phpstan analyse --level=max src"
+    },
+    "extra": {
+        "zf": {
+            "module": "NetgluePostmark",
+            "config-provider": "NetgluePostmark\\ConfigProvider"
+        }
     }
 }

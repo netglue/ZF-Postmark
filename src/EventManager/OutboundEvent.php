@@ -17,7 +17,7 @@ abstract class OutboundEvent extends AbstractEvent
         'SpamComplaint' => SpamComplaintEvent::class,
     ];
 
-    public static function factory(string $jsonPayload) : self
+    final public static function factory(string $jsonPayload) : self
     {
         $payload = self::payloadFromString($jsonPayload);
         if (! isset($payload['RecordType'])) {
@@ -29,11 +29,17 @@ abstract class OutboundEvent extends AbstractEvent
                 $payload['RecordType']
             ));
         }
+        $eventClass = self::$recordTypes[$payload['RecordType']];
         /** @var OutboundEvent $event */
-        $event = new self::$recordTypes[$payload['RecordType']];
+        $event = $eventClass::withPayload($payload);
+        return $event;
+    }
+
+    protected static function withPayload(array $payload) : self
+    {
+        $event = new static;
         $event->payload = $payload;
         $event->setParam('payload', $payload);
-
         return $event;
     }
 
@@ -42,6 +48,4 @@ abstract class OutboundEvent extends AbstractEvent
         $payload = $this->payload();
         return isset($payload['Recipient']) ? $payload['Recipient'] : null;
     }
-
-
 }

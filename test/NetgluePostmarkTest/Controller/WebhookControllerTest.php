@@ -144,6 +144,22 @@ class WebhookControllerTest extends TestCase
     /**
      * @dataProvider getActions
      */
+    public function testIs401WithIncorrectCredentials($action)
+    {
+        $this->prepareBasicAuth();
+        $this->request->setMethod('POST');
+        $headers = $this->request->getHeaders();
+        $headers->addHeaderLine(sprintf('Authorization: Basic %s', \base64_encode('wrong:wrong')));
+        /** @var JsonModel $model */
+        $model = $this->dispatchAction($action);
+        $this->assertInstanceOf(JsonModel::class, $model);
+        $this->assertSame('Authentication Failed', $model->getVariable('error')['message']);
+        $this->assertSame(401, $this->response->getStatusCode());
+    }
+
+    /**
+     * @dataProvider getActions
+     */
     public function testIs200WhenAuthSucceeds($action)
     {
         $this->request->setMethod('POST');
@@ -224,6 +240,22 @@ class WebhookControllerTest extends TestCase
         $this->controller = (new WebhookControllerFactory)($container->reveal());
         $this->dispatchAction();
         $this->assertSame(405, $this->response->getStatusCode());
+    }
+
+    /**
+     * @expectedException \NetgluePostmark\Exception\ConfigException
+     * @expectedExceptionMessage Expected an instance of
+     */
+    public function testExceptionInFactoryWhenLoggerIsNotPsr()
+    {
+        $config = (new ConfigProvider)();
+        $config['postmark']['webhookOptions']['basicAuth'] = false;
+        $container = $this->prophesize(ContainerInterface::class);
+        $container->get('config')->willReturn($config);
+        $container->get(EventEmitter::class)->willReturn($this->emitter);
+        $container->has(LoggerInterface::class)->willReturn(true);
+        $container->get(LoggerInterface::class)->willReturn(new \stdClass());
+        (new WebhookControllerFactory)($container->reveal());
     }
 
 }

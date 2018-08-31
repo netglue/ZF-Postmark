@@ -21,13 +21,11 @@ class InboundMessageEvent extends AbstractEvent
 
     public function getSenderName() :? string
     {
-        $payload = $this->payload();
-        return isset($payload['FromName']) ? $payload['FromName'] : null;
+        return $this->payloadPropertyToString('FromName');
     }
 
     public function getSenderEmail() :? string
     {
-        $payload = $this->payload();
-        return isset($payload['From']) ? $payload['From'] : null;
+        return $this->payloadPropertyToString('From');
     }
 }

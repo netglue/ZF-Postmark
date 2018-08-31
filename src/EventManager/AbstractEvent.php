@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace NetgluePostmark\EventManager;
 
+use DateTimeImmutable;
 use NetgluePostmark\Exception;
+use Throwable;
 use Zend\EventManager\Event;
 use function json_decode;
 use function is_array;
@@ -48,5 +50,25 @@ abstract class AbstractEvent extends Event
             throw new Exception\InvalidArgumentException('Event payload could not be decoded');
         }
         return $payload;
+    }
+
+    protected function payloadPropertyToDateTime(string $propertyName) :? DateTimeImmutable
+    {
+        $dateString = $this->payloadPropertyToString($propertyName);
+        if (! $dateString) {
+            return null;
+        }
+        try {
+            return new DateTimeImmutable($dateString);
+        } catch (Throwable $exception) {
+            return null;
+        }
+    }
+
+    protected function payloadPropertyToString(string $propertyName) :? string
+    {
+        $payload = $this->payload();
+        $value = isset($payload[$propertyName]) ? $payload[$propertyName] : null;
+        return empty($value) ? null : (string) $value;
     }
 }

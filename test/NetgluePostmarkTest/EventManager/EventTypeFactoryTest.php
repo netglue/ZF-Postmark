@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace NetgluePostmarkTest\EventManager;
 
+use DateTimeImmutable;
 use NetgluePostmark\EventManager\AbstractEvent;
 use NetgluePostmark\EventManager\BounceEvent;
 use NetgluePostmark\EventManager\ClickEvent;
@@ -37,6 +38,7 @@ class EventTypeFactoryTest extends TestCase
         $this->assertSame(AbstractEvent::EVENT_HARD_BOUNCE, $event->getName());
         $this->assertOutboundStandardProperties($event);
         $this->assertNotNull($event->getDescription());
+        $this->assertSame('Hard bounce', $event->getBounceName());
     }
 
     public function testSoftBounceEvent()
@@ -50,20 +52,34 @@ class EventTypeFactoryTest extends TestCase
         $this->assertSame(AbstractEvent::EVENT_SOFT_BOUNCE, $event->getName());
         $this->assertOutboundStandardProperties($event);
         $this->assertNotNull($event->getDescription());
+        $date = $event->getBounceDate();
+        $this->assertInstanceOf(DateTimeImmutable::class, $date);
+        $this->assertSame('1/8/2014', $date->format('j/n/Y'));
+        $this->assertSame('-04:00', $date->format('P'));
+        $this->assertSame('13:28:10', $date->format('H:i:s'));
+        $this->assertSame('Soft bounce', $event->getBounceName());
     }
 
     public function testClickEvent()
     {
+        /** @var ClickEvent $event */
         $event = OutboundEvent::factory($this->getJsonFixture('click.json'));
         $this->assertInstanceOf(ClickEvent::class, $event);
         $this->assertOutboundStandardProperties($event);
+        $this->assertNotNull($event->getClickedUrl());
     }
 
     public function testDeliveryEvent()
     {
+        /** @var DeliveryEvent $event */
         $event = OutboundEvent::factory($this->getJsonFixture('delivery.json'));
         $this->assertInstanceOf(DeliveryEvent::class, $event);
         $this->assertOutboundStandardProperties($event);
+        $date = $event->getDeliveryDate();
+        $this->assertInstanceOf(DateTimeImmutable::class, $date);
+        $this->assertSame('1/8/2014', $date->format('j/n/Y'));
+        $this->assertSame('-04:00', $date->format('P'));
+        $this->assertSame('13:28:10', $date->format('H:i:s'));
     }
 
     public function testInboundEvent()
@@ -138,5 +154,27 @@ class EventTypeFactoryTest extends TestCase
         $data = \json_decode($jsonString, true);
         $data['RecordType'] = 'Unknown';
         OutboundEvent::factory(\json_encode($data));
+    }
+
+    public function testInvalidDateFormatWillResultInNullInsteadOfException()
+    {
+        $jsonString = $this->getJsonFixture('soft-bounce.json');
+        $data = \json_decode($jsonString, true);
+        $data['BouncedAt'] = 'Invalid Date Format';
+        /** @var BounceEvent $event */
+        $event = $event = OutboundEvent::factory(\json_encode($data));
+        $this->assertInstanceOf(BounceEvent::class, $event);
+        $this->assertNull($event->getBounceDate());
+    }
+
+    public function testEmptyStringBounceDateWillEvaluateToNull()
+    {
+        $jsonString = $this->getJsonFixture('soft-bounce.json');
+        $data = \json_decode($jsonString, true);
+        $data['BouncedAt'] = '';
+        /** @var BounceEvent $event */
+        $event = $event = OutboundEvent::factory(\json_encode($data));
+        $this->assertInstanceOf(BounceEvent::class, $event);
+        $this->assertNull($event->getBounceDate());
     }
 }

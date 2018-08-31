@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace NetgluePostmark\EventManager;
 
+use DateTimeImmutable;
 use NetgluePostmark\Exception;
 use function array_key_exists;
 use function in_array;
@@ -87,8 +88,7 @@ class BounceEvent extends OutboundEvent
 
     public function getRecipient() :? string
     {
-        $payload = $this->payload();
-        return isset($payload['Email']) ? $payload['Email'] : null;
+        return $this->payloadPropertyToString('Email');
     }
 
     public function isHardBounce() : bool
@@ -106,10 +106,18 @@ class BounceEvent extends OutboundEvent
         return in_array($this->getBounceCode(), self::$spamComplaintCodes, true);
     }
 
+    public function getBounceName() :? string
+    {
+        return $this->payloadPropertyToString('Name');
+    }
+
     public function getDescription() :? string
     {
-        $payload = $this->payload();
-        $description = isset($payload['Description']) ? $payload['Description'] : null;
-        return empty($description) ? null : (string) $description;
+        return $this->payloadPropertyToString('Description');
+    }
+
+    public function getBounceDate() :? DateTimeImmutable
+    {
+        return $this->payloadPropertyToDateTime('BouncedAt');
     }
 }

@@ -45,7 +45,6 @@ abstract class OutboundEvent extends AbstractEvent
 
     public function getRecipient() :? string
     {
-        $payload = $this->payload();
-        return isset($payload['Recipient']) ? $payload['Recipient'] : null;
+        return $this->payloadPropertyToString('Recipient');
     }
 }

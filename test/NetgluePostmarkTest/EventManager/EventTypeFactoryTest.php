@@ -36,6 +36,7 @@ class EventTypeFactoryTest extends TestCase
         $this->assertFalse($event->isSpamComplaint());
         $this->assertSame(AbstractEvent::EVENT_HARD_BOUNCE, $event->getName());
         $this->assertOutboundStandardProperties($event);
+        $this->assertNotNull($event->getDescription());
     }
 
     public function testSoftBounceEvent()
@@ -48,6 +49,7 @@ class EventTypeFactoryTest extends TestCase
         $this->assertFalse($event->isSpamComplaint());
         $this->assertSame(AbstractEvent::EVENT_SOFT_BOUNCE, $event->getName());
         $this->assertOutboundStandardProperties($event);
+        $this->assertNotNull($event->getDescription());
     }
 
     public function testClickEvent()
@@ -89,6 +91,7 @@ class EventTypeFactoryTest extends TestCase
         $this->assertTrue($event->isSpamComplaint());
         $this->assertSame(AbstractEvent::EVENT_SPAM_COMPLAINT, $event->getName());
         $this->assertOutboundStandardProperties($event);
+        $this->assertNull($event->getDescription());
     }
 
     /**

@@ -105,4 +105,11 @@ class BounceEvent extends OutboundEvent
     {
         return in_array($this->getBounceCode(), self::$spamComplaintCodes, true);
     }
+
+    public function getDescription() :? string
+    {
+        $payload = $this->payload();
+        $description = isset($payload['Description']) ? $payload['Description'] : null;
+        return empty($description) ? null : (string) $description;
+    }
 }
